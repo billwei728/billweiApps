@@ -33,9 +33,9 @@ class module_worker extends module_store
 
     private function select()  
     {
-        $list = $this->readFile();
+        $list = $this->sortList();
         if (isset($list) && ! empty($list)) {
-            // $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . " Reading File... : " . json_encode($list), M_LOG_INFO); 
+            // $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . " Reading File... : " . json_encode($list), M_LOG_INFO);
             return $list;
         } else {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . $this->getFileName() . " Read Failed.", M_LOG_ERROR);
@@ -46,7 +46,7 @@ class module_worker extends module_store
     private function update($arrParams = array())  
     {
         try {
-            $listPrev = $this->readFile();
+            $listPrev = $this->sortList();
 
             if ($this->clearFile()) {
                 $list = array();
@@ -69,10 +69,10 @@ class module_worker extends module_store
         }
     }
 
-    private function delete($arrParam = array())  
+    private function delete($arrParams = array())  
     {
         try {
-            $listPrev = $this->readFile();
+            $listPrev = $this->sortList();
 
             if ($this->clearFile()) {
                 $listRemain = array();
@@ -122,7 +122,7 @@ class module_worker extends module_store
     private function update_rank($arrParams = array())  
     {
         try {
-            $listPrev = $this->readFile();
+            $listPrev = $this->sortList();
             
             $list = array();
             $currentRankId = $arrParams['updRank_id'];
@@ -176,11 +176,22 @@ class module_worker extends module_store
 
     private function getNewIndex()  
     {
-        $file = escapeshellarg($this->getFileName()); // for the security concious (should be everyone!)
-        $line = `tail -n 1 $file`;
-        $array = explode("||",$line);
+        // $file = escapeshellarg($this->getFileName()); // for the security concious (should be everyone!)
+        // $line = `tail -n 1 $file`;
+        // $array = explode("||",$line);
+        $listPrev = $this->readFile();
+        $listCount = count($listPrev);
+        
+        return ++$listCount;
+    }
 
-        return ++$array[0];
+    private function sortList()  
+    {
+        $listPrev = $this->readFile();
+        usort($listPrev, function($a, $b) {
+            return $a['rank'] - $b['rank'];
+        });
+        return $listPrev;
     }
 }
 ?>

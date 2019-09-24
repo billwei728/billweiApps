@@ -223,9 +223,7 @@
 
             // Form Remove Action
             function remove() {
-                var table = $('#tblMenu').DataTable(),
-                    tableData,
-                    rowID = rowCheck().split("||")[0],
+                var rowID = rowCheck().split("||")[0],
                     rowSelected = parseInt(rowCheck().split("||")[1]);
 
                 if (0 === rowSelected) {
