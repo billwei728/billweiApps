@@ -31,7 +31,9 @@ class filedata_store extends base
             } else {
                 throw new Exception($filename . " Open Failed.");
             }
-            if (end($list)) array_pop($list); // Check Last Array
+            if (end($list)) {
+                array_pop($list); // Check Last Array
+            }
         } catch (Exception $errMsg) {
             $this->log('[' . get_parent_class($this) . ' - ' . __FUNCTION__ . '] ' . $filename . " Read Failed." . "Message : " . $errMsg, M_LOG_ERROR);
         }

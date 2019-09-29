@@ -13,10 +13,10 @@ class base
 		//if message is array type  
 		if (is_array($arMsg)) {  
 			//concatenate msg with datetime  
-			foreach($arMsg as $msg)  
+			foreach($arMsg as $msg) {
 				$stEntry .= $arLogData['event_datetime'] . " " . $msg . "\r\n";  
-		}  
-		else {   //concatenate msg with datetime  
+			}
+		} else {   //concatenate msg with datetime  
 			$stEntry .= $arLogData['event_datetime'] . " " . $arMsg . "\r\n";  
 		}  
 		//create file with current date name  

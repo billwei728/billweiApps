@@ -14,8 +14,11 @@ $(function() {
     var homeURL;
     var sessionURL = "pages/menu_session.php";
 
-    if ("admin" == user) homeURL = pathURL;
-    else homeURL = pathURL + user + ".php";
+    if ("admin" == user) {
+        homeURL = pathURL;
+    } else {
+        homeURL = pathURL + user + ".php";
+    }
     
 	redirection("#home", homeURL, null, null);
     redirection("#home404", homeURL, null, null);
@@ -61,8 +64,13 @@ $(function() {
     // Notification
     var total = getCookieValue("total"),
         result = getCookieValue("result"),
-        action = getCookieValue("action").replace("_", " ");
+        action = getCookieValue("action").replace("_", " "),
+        resMsg;
+    if ("success" == result) {
         resMsg = total + " record(s) has been " + action + " successfully";
+    } else if ("error" == result) {
+        resMsg = "Failed to " + action + " " + total + " record(s)";
+    }
     if (result) {
         $.miniNoty(resMsg, result);
         return false;

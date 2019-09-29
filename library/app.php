@@ -38,7 +38,7 @@ class app extends base
      * @access public
      * @return void
      */
-	function autoload($className) 
+	public function autoload($className) 
 	{
 		$filename = '';
 		$libPath = $this->getLibPath();
@@ -107,7 +107,7 @@ class app extends base
      * @access public
      * @return string Path name that points to the MX library
      */
-	function getLibPath() 
+	public function getLibPath() 
 	{
 		return $this->libPath;
 	}

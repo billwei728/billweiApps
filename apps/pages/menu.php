@@ -11,7 +11,6 @@
         }
     </style>
     <script type="text/javascript">
-        <?php include_once(JSFUNCTION . 'function-pre-common.js'); ?>
         preLoading();
     </script>
 </head>

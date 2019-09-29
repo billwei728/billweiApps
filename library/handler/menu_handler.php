@@ -13,4 +13,7 @@ Use Exception;
         $arrParams['menu_action'] = "select";
         $result['menu'] = $menu_worker->doAction($arrParams);
     }
+
+    $result['optModule'] = $menu_worker->doPopulate("module");
+    $result['optParent'] = $menu_worker->doPopulate("parent");
 ?>

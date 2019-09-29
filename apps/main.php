@@ -29,11 +29,11 @@ if (! isset($_SESSION[$cookie_name])) {
 }
 
 include_once(LIB_DIR . 'app.php');
-include_once(OBJECTS . 'menu_populate.php');
+include_once(HANDLER . 'menu_populate_handler.php');
 
 if (isset($_POST["menu_action"])) {
 	include_once(HANDLER . "menu_handler.php");
-} elseif (isset($_POST["module_action"])) {
+} else if (isset($_POST["module_action"])) {
 	include_once(HANDLER . "module_handler.php");
 }
 

@@ -10,7 +10,9 @@ class module_worker extends module_store
     {
         if (isset($_SESSION["user"])) {
             $this->setFileName(STORAGE . $_SESSION["user"] . "_module.dat");
-        } else $this->setFileName(STORAGE . OPERATION_MODE . "_module.dat");
+        } else {
+            $this->setFileName(STORAGE . OPERATION_MODE . "_module.dat");
+        }
         $this->setReadMode('r');
         $this->setClearMode("w");
         $this->setInsertMode("a+");
@@ -19,12 +21,19 @@ class module_worker extends module_store
     public function doAction($arrParams = array()) 
     {
         try {
-            if ("update" == $arrParams['module_action']) return $this->update($arrParams);
-            elseif ("delete" == $arrParams['module_action']) return $this->delete($arrParams);
-            elseif ("insert" == $arrParams['module_action']) return $this->insert($arrParams);
-            elseif ("updRank" == $arrParams['module_action']) return $this->update_rank($arrParams);
-            elseif ("clear" == $arrParams['module_action']) return $this->clear($arrParams);
-            elseif ("select" == $arrParams['module_action']) return $this->select();
+            if ("update" == $arrParams['module_action']) {
+                return $this->update($arrParams);
+            } else if ("delete" == $arrParams['module_action']) {
+                return $this->delete($arrParams);
+            } else if ("insert" == $arrParams['module_action']) {
+                return $this->insert($arrParams);
+            } else if ("updRank" == $arrParams['module_action']) {
+                return $this->update_rank($arrParams);
+            } else if ("clear" == $arrParams['module_action']) {
+                return $this->clear($arrParams);
+            } else if ("select" == $arrParams['module_action']) {
+                return $this->select();
+            }
         } catch (Exception $errMsg) {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . "Message : " . $errMsg, M_LOG_ERROR);
             throw new Exception($errMsg);
@@ -35,7 +44,6 @@ class module_worker extends module_store
     {
         $list = $this->sortList();
         if (isset($list) && ! empty($list)) {
-            // $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . " Reading File... : " . json_encode($list), M_LOG_INFO);
             return $list;
         } else {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . $this->getFileName() . " Read Failed.", M_LOG_ERROR);
@@ -130,14 +138,14 @@ class module_worker extends module_store
             if ($this->clearFile()) {
                 if ("rank_up" == $arrParams['updRank_action']) {
                     $updateRankId = $arrParams['updRank_id'] - 1;
-                } elseif ("rank_down" == $arrParams['updRank_action']) {
+                } else if ("rank_down" == $arrParams['updRank_action']) {
                     $updateRankId = $arrParams['updRank_id'] + 1;
                 }
                 foreach ($listPrev as $key => $value) {
                     if ($currentRankId == $arrParams["module_id"][$key]) {
                         $arrParams["module_id"][$key] = $updateRankId;
                         $arrParams["module_rank"][$key] = $updateRankId;
-                    } elseif ($updateRankId == $arrParams["module_id"][$key]) {
+                    } else if ($updateRankId == $arrParams["module_id"][$key]) {
                         $arrParams["module_id"][$key] = $currentRankId;
                         $arrParams["module_rank"][$key] = $currentRankId;
                     }
@@ -158,8 +166,9 @@ class module_worker extends module_store
 
     private function clear($arrParams = array())  
     {
-        if ($this->readFile()) return $this->clearFile();
-        else {
+        if ($this->readFile()) {
+            return $this->clearFile();
+        } else {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . $this->getFileName() . " Clear Failed.", M_LOG_ERROR);
             throw new Exception($this->getFileName() . " Clear Failed.");
         }

@@ -10,7 +10,9 @@ class menu_worker extends menu_store
     {
         if (isset($_SESSION["user"])) {
             $this->setFileName(STORAGE . $_SESSION["user"] . "_menu.dat");
-        } else $this->setFileName(STORAGE . OPERATION_MODE . "_menu.dat");
+        } else {
+            $this->setFileName(STORAGE . OPERATION_MODE . "_menu.dat");
+        }
         $this->setReadMode("r");
         $this->setClearMode("w");
         $this->setInsertMode("a+");
@@ -19,12 +21,19 @@ class menu_worker extends menu_store
     public function doAction($arrParams = array()) 
     {
         try {
-            if ("update" == $arrParams["menu_action"]) return $this->update($arrParams);
-            elseif ("delete" == $arrParams["menu_action"]) return $this->delete($arrParams);
-            elseif ("insert" == $arrParams["menu_action"]) return $this->insert($arrParams);
-            elseif ("updRank" == $arrParams["menu_action"]) return $this->update_rank($arrParams);
-            elseif ("clear" == $arrParams["menu_action"]) return $this->clear($arrParams);
-            else return $this->select();
+            if ("update" == $arrParams["menu_action"]) {
+                return $this->update($arrParams);
+            } else if ("delete" == $arrParams["menu_action"]) {
+                return $this->delete($arrParams);
+            } else if ("insert" == $arrParams["menu_action"]) {
+                return $this->insert($arrParams);
+            } else if ("updRank" == $arrParams["menu_action"]) {
+                return $this->update_rank($arrParams);
+            } else if ("clear" == $arrParams["menu_action"]) {
+                return $this->clear($arrParams);
+            } else {
+                return $this->select();
+            }
         } catch (Exception $errMsg) {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . "Message : " . $errMsg, M_LOG_ERROR);
             throw new Exception($errMsg);
@@ -35,7 +44,58 @@ class menu_worker extends menu_store
     {
         $list = $this->readFile();
         if (isset($list) && ! empty($list)) {
-            $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . " Reading File... : " . json_encode($list), M_LOG_INFO); 
+            // $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . " Reading File... : " . json_encode($list), M_LOG_INFO);
+            $list = $this->sortList($list);
+            $listModule = $this->getModuleName();        
+
+            $listParent = array();
+            foreach ($listModule as $moduleKey => $module) {
+                $num = 0;
+                foreach ($list as $menuKey => $menu) {
+                    if ($list[$menuKey]["module"] == $module["prefix"]) {
+                        if (empty($listParent[$module["prefix"]])) {
+                            $listParent[$module["prefix"]][] = $list[$menuKey]["parent"];
+                            $listCount[$module["prefix"]][$list[$menuKey]["parent"]] = ++$num;
+                        } else {
+                            if (! in_array($list[$menuKey]["parent"], $listParent[$module["prefix"]])) {
+                                $num = 0;
+                                $listParent[$module["prefix"]][] = $list[$menuKey]["parent"];
+                            }
+                            $listCount[$module["prefix"]][$list[$menuKey]["parent"]] = ++$num;
+                        }
+                    }
+                }
+            }
+
+            $listMenu = array();
+            foreach ($listCount as $moduleKey => $count) {
+                foreach ($count as $parentKey => $subcount) {
+                    foreach ($list as $menuKey => $menu) {
+                        if ($menu["module"] == $moduleKey) {
+                            if ($menu["parent"] == $parentKey) {
+                                if (1 < $subcount) {
+                                    if (1 == $menu["rank"]) {
+                                        $list[$menuKey]["rank"]  = $menu["rank"] . "_" . "down";
+                                    } else if ($subcount == $menu["rank"]) {
+                                        $list[$menuKey]["rank"]  = $menu["rank"] . "_" . "up";
+                                    } else {
+                                        $list[$menuKey]["rank"]  = $menu["rank"] . "_" . "updown";
+                                    }
+                                } else {
+                                    $list[$menuKey]["rank"] = $menu["rank"] . "_" . "no";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $num = 0;
+            foreach ($list as $key => $value) {
+                $list[$key] = str_replace("\r\n", '', $list[$key]);
+                $list[$key]["rowid"] = ++$num;
+            }
+
             return $list;
         } else {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . $this->getFileName() . " Read Failed.", M_LOG_ERROR);
@@ -53,7 +113,7 @@ class menu_worker extends menu_store
                 $arrSelected[] = $arrParams["row_checked"];
                 foreach ($listPrev as $key => $value) {
                     if (in_array($listPrev[$key]["id"], $arrSelected)) {
-                        $list[] = $arrParams["menu_id_new"] . '||' . $arrParams["module_name_new"] . '||' . $arrParams["parent_node_new"] . '||' . $arrParams["menu_rank_new"] . '||' . $arrParams["menu_name_new"] . '||' . $arrParams["menu_url_new"] . '||' . $arrParams["menu_icon_new"] . '||' . $arrParams["menu_idname_new"] . '||' . 1 . "\r\n";
+                        $list[] = $arrParams["menu_id_new"] . '||' . $arrParams["module_name_new"] . '||' . $arrParams["parent_node_new"] . '||' . $listPrev[$key]["rank"] . '||' . $arrParams["menu_name_new"] . '||' . $arrParams["menu_url_new"] . '||' . $arrParams["menu_icon_new"] . '||' . $arrParams["menu_idname_new"] . '||' . 1 . "\r\n";
                     } else {
                         $list[] = $listPrev[$key]["id"] . '||' . $listPrev[$key]["module"] . '||' . $listPrev[$key]["parent"] . '||' . $listPrev[$key]["rank"] . '||' . $listPrev[$key]["name"] . '||' . $listPrev[$key]["url"] . '||' . $listPrev[$key]["icon"] . '||' . $listPrev[$key]["idname"] . '||' . $listPrev[$key]["ver"];
                     }
@@ -72,24 +132,10 @@ class menu_worker extends menu_store
         try {
             $listPrev = $this->readFile();
             
-// echo '<pre>'; print_r($arrParams); echo '</pre>';
-// Array
-// (
-//     [tblMenu_length] => 10
-//     [row_check] => Array
-//         (
-//             [0] => 3
-//         )
-
-//     [menu_action] => delete
-//     [updRank_action] => 
-//     [updRank_id] => 
-// )
-
-            // if ($this->clearFile()) {
-                $listRemain = array();
+            if ($this->clearFile()) {
+                $arrSelected[] = $arrParams["action_id"];
                 $listDeleteParent;
-                $arrSelected = $arrParams["row_check"];
+                $listRemain = array();
                 foreach ($listPrev as $key => $value) {
                     if (in_array($listPrev[$key]["id"], $arrSelected)) {
                         $listDeleteParent = $listPrev[$key]["parent"];
@@ -97,52 +143,41 @@ class menu_worker extends menu_store
                         $listRemain[] = $listPrev[$key];
                     }
                 }
-echo '<pre>'; print_r($listDeleteParent); echo '</pre>';
 
                 $listSibling = array();
                 foreach ($listRemain as $key => $value) {
                     if ($listRemain[$key]["parent"] == $listDeleteParent) {
                         $listSibling[] = $listRemain[$key];
+                        unset($listRemain[$key]);
                     }
                 }
-                usort($listSibling, function($a, $b) {
-                    return $a["rank"] - $b["rank"];
-                });
 
-                $listSiblingNew = array();
-                $rankNew = 1;
-                foreach ($listSibling as $key => $value) {
-                    $listSiblingNew[$key]["rank"] = $rankNew;
-                    $rankNew++;
+                if (! empty($listSibling)) {
+                    usort($listSibling, function($a, $b) {
+                        return $a["rank"] - $b["rank"];
+                    });
+
+                    $rankNew = 1;
+                    foreach ($listSibling as $key => $value) {
+                        $listSibling[$key]["rank"] = $rankNew;
+                        $rankNew++;
+                    }
                 }
-echo '<pre>'; print_r($listSibling); echo '</pre>';
-echo '<pre>'; print_r($listSiblingNew); echo '</pre>';
 
+                $listMerge = array_merge($listRemain, $listSibling);
+                $listFinal = $this->sortList($listMerge);
+                if (! empty($listFinal)) {
+                    foreach ($listFinal as $key => $value) {
+                        $list[] = $listFinal[$key]["id"] . '||' . $listFinal[$key]["module"] . '||' . $listFinal[$key]["parent"] . '||' . $listFinal[$key]["rank"] . '||' . $listFinal[$key]["name"] . '||' . $listFinal[$key]["url"] . '||' . $listFinal[$key]["icon"] . '||' . $listFinal[$key]["idname"] . '||' . $listFinal[$key]["ver"];
+                    }
 
-
-                // $index = 0;
-                // foreach ($listPrev as $key => $value) {
-                //     if (! in_array($listPrev[$key]["id"], $arrSelected)) {
-                //         $listRemain[$index] = $listPrev[$key];
-                //         $index++;
-                //     }
-                // }
-
-                // usort($listRemain, function($a, $b) {
-                //     return $a["rank"] - $b["rank"];
-                // });
-
-                // $list = array();
-                // $index = 1;
-                // foreach ($listRemain as $key => $value) {
-                //     $list[$key] = $index . '||' . $listRemain[$key]["prefix"] . '||' . $index . '||' . $listRemain[$key]["name"];
-                //     $index++;
-                // }
-
-                // if ($this->insertFile($list)) {
-                //     $this->returnPage(count($arrSelected), "deleted", "success");
-                // }
-            // }  
+                    if ($this->insertFile($list)) {
+                        $this->returnPage(count($arrSelected), "deleted", "success");
+                    }
+                } else {
+                    $this->returnPage(count($arrSelected), "deleted", "error");
+                }
+            }
         } catch (Exception $errMsg) {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . "Record(s) Delete Failed." . "Message : " . $errMsg, M_LOG_ERROR);
         }   
@@ -153,7 +188,7 @@ echo '<pre>'; print_r($listSiblingNew); echo '</pre>';
         try {
             $list = array();
             //define lastest rank
-            $menuNewRank = $this->getNewRank($arrMenu["module_name_new"], $arrMenu["parent_node_new"]);
+            $menuNewRank = $this->getNewRank($arrParams["module_name_new"], $arrParams["parent_node_new"]);
             $list[] = $this->getNewIndex() . '||' . $arrParams["module_name_new"] . '||' . $arrParams["parent_node_new"] . '||' . $menuNewRank . '||' . $arrParams["menu_name_new"] . '||' . $arrParams["menu_url_new"] . '||' . $arrParams["menu_icon_new"] . '||' . $arrParams["menu_idname_new"] . '||' . 1 . "\r\n";
 
             if ($this->insertFile($list)) {
@@ -168,33 +203,53 @@ echo '<pre>'; print_r($listSiblingNew); echo '</pre>';
     {
         try {
             $listPrev = $this->readFile();
-            
-            $list = array();
-            $currentRankId = $arrParams["updRank_id"];
-            $updateRankId;
-            if ($this->clearFile()) {
-                if ("rank_up" == $arrParams["updRank_action"]) {
-                    $updateRankId = $arrParams["updRank_id"] - 1;
-                } elseif ("rank_down" == $arrParams["updRank_action"]) {
-                    $updateRankId = $arrParams["updRank_id"] + 1;
-                }
-                foreach ($listPrev as $key => $value) {
-                    if ($currentRankId == $arrParams["menu_id"][$key]) {
-                        $arrParams["menu_id"][$key] = $updateRankId;
-                        $arrParams["menu_rank"][$key] = $updateRankId;
-                    } elseif ($updateRankId == $arrParams["menu_id"][$key]) {
-                        $arrParams["menu_id"][$key] = $currentRankId;
-                        $arrParams["menu_rank"][$key] = $currentRankId;
-                    }
-                    $list[] = $arrParams["menu_id"][$key] . '||' . $arrParams["menu_prefix"][$key] . '||' . $arrParams["menu_rank"][$key] . '||' . $arrParams["menu_name"][$key] . "\r\n";
-                }
-                usort($list, function($a, $b) {
-                    return $a["menu_rank"] - $b["menu_rank"];
-                });
-            }
 
-            if ($this->insertFile($list)) {
-                $this->returnPage(__FUNCTION__);
+            if ($this->clearFile()) {
+                $arrSelected[] = $arrParams["action_id"];
+                $listSelectedParent;
+                $listSelectedRank = 0;
+                $listSelectedNewRank = 0;
+                foreach ($listPrev as $key => $value) {
+                    if (in_array($listPrev[$key]["id"], $arrSelected)) {
+                        $listSelectedParent = $listPrev[$key]["parent"];
+                        if ("rank_up" == $arrParams["updRank_action"]) {
+                            $listSelectedRank = $listPrev[$key]["rank"];
+                            $listSelectedNewRank = $listPrev[$key]["rank"] - 1;
+                        } else if ("rank_down" == $arrParams["updRank_action"]) {
+                            $listSelectedRank = $listPrev[$key]["rank"];
+                            $listSelectedNewRank = $listPrev[$key]["rank"] + 1;
+                        }
+                    }
+                }
+
+                $listSibling = array();
+                $listRemain = array();
+                foreach ($listPrev as $key => $value) {
+                    if ($listPrev[$key]["parent"] == $listSelectedParent) {
+                        if ($listPrev[$key]["rank"] == $listSelectedRank) {
+                            $listPrev[$key]["rank"] = $listSelectedNewRank;
+                        } else if ($listPrev[$key]["rank"] == $listSelectedNewRank) {
+                            $listPrev[$key]["rank"] = $listSelectedRank;
+                        }
+                        $listSibling[] = $listPrev[$key];
+                    } else {
+                        $listRemain[] = $listPrev[$key];
+                    }
+                }
+
+                $listMerge = array_merge($listRemain, $listSibling);
+                $listFinal = $this->sortList($listMerge);
+                if (! empty($listFinal)) {
+                    foreach ($listFinal as $key => $value) {
+                        $list[] = $listFinal[$key]["id"] . '||' . $listFinal[$key]["module"] . '||' . $listFinal[$key]["parent"] . '||' . $listFinal[$key]["rank"] . '||' . $listFinal[$key]["name"] . '||' . $listFinal[$key]["url"] . '||' . $listFinal[$key]["icon"] . '||' . $listFinal[$key]["idname"] . '||' . $listFinal[$key]["ver"];
+                    }
+
+                    if ($this->insertFile($list)) {
+                        $this->returnPage(count($arrSelected), "updated", "success");
+                    }
+                } else {
+                    $this->returnPage(count($arrSelected), "updated", "error");
+                }
             }
         } catch (Exception $errMsg) {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . "Record(s) Ranking Update Failed." . "Message : " . $errMsg, M_LOG_ERROR);
@@ -203,8 +258,9 @@ echo '<pre>'; print_r($listSiblingNew); echo '</pre>';
 
     private function clear($arrParams = array())  
     {
-        if ($this->readFile()) return $this->clearFile();
-        else {
+        if ($this->readFile()) {
+            return $this->clearFile();
+        } else {
             $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . $this->getFileName() . " Clear Failed.", M_LOG_ERROR);
             throw new Exception($this->getFileName() . " Clear Failed.");
         }
@@ -238,7 +294,7 @@ echo '<pre>'; print_r($listSiblingNew); echo '</pre>';
                     $list[] = $listPrev[$key];
                 }
             }
-        }       
+        }
 
         $countMenus = count($list);
         $init = 0;
@@ -251,5 +307,49 @@ echo '<pre>'; print_r($listSiblingNew); echo '</pre>';
 
         return ++$lastRank;
     }
+
+#region -------------------- Select Option --------------------
+    public function doPopulate($select) 
+    {
+        try {
+            if ("parent" == $select) {
+                return $this->selectOptVal_Parent();
+            } else {
+                return $this->selectOptVal_Module();
+            }
+        } catch (Exception $errMsg) {
+            $this->log('[' . get_called_class() . ' - ' . __FUNCTION__ . '] ' . "Message : " . $errMsg, M_LOG_ERROR);
+            throw new Exception($errMsg);
+        }
+    }
+
+    public function selectOptVal_Module() 
+    {
+        $moduleColumn = array("prefix", "name");
+        $listPrev = $this->getModuleName($moduleColumn);
+        
+        $list = array();
+        foreach ($listPrev as $key => $value) {
+            $list[$listPrev[$key]['name']] = $listPrev[$key]['prefix'];
+        }
+
+        return $list;
+    }
+
+    public function selectOptVal_Parent() 
+    {
+        $listPrev = $this->readFile();
+        
+        $list = array();
+        foreach ($listPrev as $key => $value) {
+            if ("--" == $listPrev[$key]['url']) {
+                $list[$listPrev[$key]['name']] = $listPrev[$key]['id'];
+            }
+        }
+        $list["None"] = "-";
+
+        return $list;
+    }
+#endregion
 }
 ?>

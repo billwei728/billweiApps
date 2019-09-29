@@ -15,7 +15,7 @@ Use App\worker\module_worker;
             include_once(WORKER . $module[0] . "_worker.php");
             include_once(HANDLER . $module[0] . "_handler.php");
             include_once(PAGES . $page . ".php");
-        } elseif ($page == "home") {
+        } else if ($page == "home") {
         	include_once(PAGES . $page . ".html");
         } else {
             include_once(PAGES . "404.html");
