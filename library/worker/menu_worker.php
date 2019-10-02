@@ -111,13 +111,19 @@ class menu_worker extends menu_store
             if ($this->clearFile()) {
                 $list = array();
                 $arrSelected[] = $arrParams["row_checked"];
+                $menuNewRank = $this->getNewRank($arrParams["module_name_new"], $arrParams["parent_node_new"], $listPrev);    
                 foreach ($listPrev as $key => $value) {
                     if (in_array($listPrev[$key]["id"], $arrSelected)) {
-                        $list[] = $arrParams["menu_id_new"] . '||' . $arrParams["module_name_new"] . '||' . $arrParams["parent_node_new"] . '||' . $listPrev[$key]["rank"] . '||' . $arrParams["menu_name_new"] . '||' . $arrParams["menu_url_new"] . '||' . $arrParams["menu_icon_new"] . '||' . $arrParams["menu_idname_new"] . '||' . 1 . "\r\n";
+                        if ($arrParams["parent_node_new"] != $listPrev[$key]["parent"]) {
+                            $list[] = $arrParams["menu_id_new"] . '||' . $arrParams["module_name_new"] . '||' . $arrParams["parent_node_new"] . '||' . $menuNewRank . '||' . $arrParams["menu_name_new"] . '||' . $arrParams["menu_url_new"] . '||' . $arrParams["menu_icon_new"] . '||' . $arrParams["menu_idname_new"] . '||' . 1 . "\r\n";
+                        } else {
+                            $list[] = $arrParams["menu_id_new"] . '||' . $arrParams["module_name_new"] . '||' . $arrParams["parent_node_new"] . '||' . $listPrev[$key]["rank"] . '||' . $arrParams["menu_name_new"] . '||' . $arrParams["menu_url_new"] . '||' . $arrParams["menu_icon_new"] . '||' . $arrParams["menu_idname_new"] . '||' . 1 . "\r\n";
+                        }
                     } else {
                         $list[] = $listPrev[$key]["id"] . '||' . $listPrev[$key]["module"] . '||' . $listPrev[$key]["parent"] . '||' . $listPrev[$key]["rank"] . '||' . $listPrev[$key]["name"] . '||' . $listPrev[$key]["url"] . '||' . $listPrev[$key]["icon"] . '||' . $listPrev[$key]["idname"] . '||' . $listPrev[$key]["ver"];
                     }
                 }
+
                 if ($this->insertFile($list)) {
                     $this->returnPage(count($arrSelected), "updated", "success");
                 }
@@ -277,16 +283,18 @@ class menu_worker extends menu_store
 
     private function getNewIndex()  
     {
-        $file = escapeshellarg($this->getFileName()); // for the security concious (should be everyone!)
-        $line = `tail -n 1 $file`;
-        $array = explode("||",$line);
-
-        return ++$array[0];
+        $listPrev = $this->readFile();
+        $listCount = count($listPrev);
+        
+        return ++$listCount;
     }
 
-    private function getNewRank($module, $parentNode)  
+    private function getNewRank($module, $parentNode, $listPrev = array())  
     {
-        $listPrev = $this->readFile();
+        if (empty($listPrev)) {
+            $listPrev = $this->readFile();
+        }
+     
         $list = array();
         foreach ($listPrev as $key => $value) {
             if ($module == $listPrev[$key]["module"]) {
@@ -295,7 +303,7 @@ class menu_worker extends menu_store
                 }
             }
         }
-
+   
         $countMenus = count($list);
         $init = 0;
         $lastRank = 0;
@@ -304,7 +312,7 @@ class menu_worker extends menu_store
                 $lastRank = $list[$key]["rank"];
             }
         }
-
+   
         return ++$lastRank;
     }
 
@@ -338,14 +346,22 @@ class menu_worker extends menu_store
 
     public function selectOptVal_Parent() 
     {
-        $listPrev = $this->readFile();
-        
+        $moduleColumn = array("prefix", "name");
+        $listModule = $this->getModuleName($moduleColumn);
+        $listPrev = $this->readFile();  
+
         $list = array();
+        $module;
         foreach ($listPrev as $key => $value) {
             if ("--" == $listPrev[$key]['url']) {
-                $list[$listPrev[$key]['name']] = $listPrev[$key]['id'];
+                foreach ($listModule as $modulekey => $modulevalue) {
+                    if ($listModule[$modulekey]['prefix'] == $listPrev[$key]['module']) {
+                        $module = $listModule[$modulekey]['name'];
+                    }
+                }
+                $list[$module . ' - ' . $listPrev[$key]['name']] = $listPrev[$key]['id'];
             }
-        }
+        }  
         $list["None"] = "-";
 
         return $list;

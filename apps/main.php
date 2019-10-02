@@ -35,6 +35,8 @@ if (isset($_POST["menu_action"])) {
 	include_once(HANDLER . "menu_handler.php");
 } else if (isset($_POST["module_action"])) {
 	include_once(HANDLER . "module_handler.php");
+} else if (isset($_POST["account_action"])) {
+	include_once(HANDLER . "account_handler.php");
 }
 
 include_once(PAGES . "menu.php");

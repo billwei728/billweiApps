@@ -84,6 +84,7 @@
 }
 .dropdown-logged-item .fa,
 .dropdown-logged-item .fab,
+.dropdown-logged-item .far,
 .dropdown-logged-item .fas {
   transition: 0.5s all;
   padding-right: 0.625rem;
@@ -139,6 +140,7 @@
 }
 .list-link .fa, 
 .list-link .fab,
+.list-link .far,
 .list-link .fas {
   margin-right: 0.625rem;
 }
@@ -147,6 +149,7 @@
 }
 .list-link:hover .fa, 
 .list-link:hover .fab,
+.list-link:hover .far,
 .list-link:hover .fas {
   transform: rotate(360deg);
   transition: 0.5s all;
@@ -214,7 +217,10 @@
 }
 
 .sidebar-lighten {
-  background-color: white;
+  background-image: url('../../img/background/bg_image2.jpg'); 
+  background-repeat: no-repeat; 
+  background-size: cover; 
+  background-position: center center;
 }
 
 .sidebar-lighten .ps__rail-y.ps--clicking .ps__thumb-y,
@@ -273,11 +279,13 @@
 .sidebar-lighten .link-arrow:before,
 .sidebar-lighten .list-link .fa,
 .sidebar-lighten .list-link .fab,
+.sidebar-lighten .list-link .far,
 .sidebar-lighten .list-link .fas,
 .navbar-lighten .navbar-bars,
 .dropdown-logged-lighten .dropdown-logged-toggle:before,
 .dropdown-menu-lighten .dropdown-logged-item .fa,
 .dropdown-menu-lighten .dropdown-logged-item .fab,
+.dropdown-menu-lighten .dropdown-logged-item .far,
 .dropdown-menu-lighten .dropdown-logged-item .fas {
   opacity: 0.3;
 }
@@ -289,6 +297,7 @@
 .sidebar-lighten .link-arrow.active:before,
 .sidebar-lighten .list-link:hover .fa,
 .sidebar-lighten .list-link:hover .fab,
+.sidebar-lighten .list-link:hover .far,
 .sidebar-lighten .list-link:hover .fas {
   opacity: 1.0;
 }
@@ -368,11 +377,13 @@
 .sidebar-darken .link-arrow:before,
 .sidebar-darken .list-link .fa,
 .sidebar-darken .list-link .fab,
+.sidebar-darken .list-link .far,
 .sidebar-darken .list-link .fas,
 .navbar-darken .navbar-bars,
 .dropdown-logged-darken .dropdown-logged-toggle:before,
 .dropdown-menu-darken .dropdown-logged-item .fa,
 .dropdown-menu-darken .dropdown-logged-item .fab,
+.dropdown-menu-darken .dropdown-logged-item .far,
 .dropdown-menu-darken .dropdown-logged-item .fas {
   opacity: 0.3;
 }
@@ -384,6 +395,7 @@
 .sidebar-darken .link-arrow.active:before,
 .sidebar-darken .list-link:hover .fa,
 .sidebar-darken .list-link:hover .fab,
+.sidebar-darken .list-link:hover .far.
 .sidebar-darken .list-link:hover .fas {
   opacity: 1.0;
 }

@@ -15,7 +15,7 @@
     </script>
 </head>
 
-<body class="body body-lighten" id="body">
+<body class="body body-lighten view" id="body">
     <div class="loader"></div>
 
     <div class="d-flex" id="wrapper">

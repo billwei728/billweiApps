@@ -51,21 +51,21 @@
                                         <select class="selectpicker show-tick fab" data-header="Select a module" data-live-search="true" data-style="btn-outline-secondary" data-width="100%" data-size="7" id="module_name_new" name="module_name_new" required>
                                             <option value="">Choose...</option>
                                         </select>
-                                        <div class="invalid-feedback">Please select a valid module.</div>
+                                        <div class="invalid-feedback" id="err_module_name_new">Please select a valid module.</div>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="parent_node_new" class="blockquote-footer">Parent Node <strong class="text-danger">* </strong></label>
                                         <select class="selectpicker show-tick fab" data-header="Select a parent node" data-live-search="true" data-style="btn-outline-secondary" data-width="100%" data-size="7" id="parent_node_new" name="parent_node_new" required>
                                             <option value="">Choose...</option>
                                         </select>
-                                        <div class="invalid-feedback">Please select a valid parent node.</div>
+                                        <div class="invalid-feedback" id="err_parent_node_new">Please select a valid parent node.</div>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="menu_name_new" class="blockquote-footer">Menu Name <strong class="text-danger">* </strong></label>
-                                        <input type="text" class="form-control" id="menu_name_new" name="menu_name_new" maxlength="20" aria-describedby="menu_name" required />
+                                        <input type="text" class="form-control" id="menu_name_new" name="menu_name_new" maxlength="20" required />
                                         <div class="invalid-feedback">Please provide a valid name.</div>
                                     </div>
                                 </div>

@@ -30,7 +30,7 @@ $(function() {
             'blurable': true,
             'selector': "td:first-child"
         },
-        'order': [[ 2, "asc" ]],
+        'order': [[ 1, "asc" ]],
         'select': false
     });
     new $.fn.dataTable.FixedHeader(table);
@@ -52,10 +52,12 @@ $(function() {
     var optModule = <?php echo json_encode($result['optModule']); ?>;
     var selectModule = document.getElementById("module_name_new");
     populateSelOpt(optModule, selectModule);
+    selectOnChange("module_name_new", selectModule);
 
     var optParent = <?php echo json_encode($result['optParent']); ?>;
     var selectParent = document.getElementById("parent_node_new");
     populateSelOpt(optParent, selectParent);
+    selectOnChange("parent_node_new", selectParent);
 
     // Refresh Select Picker
     $("#module_name_new").selectpicker('refresh').trigger('change');
@@ -64,7 +66,7 @@ $(function() {
 // Datatable Checkbox Render
 function dataChkBox(data, type, row) {
     if (type == "display") {
-        return '<div class="custom-control custom-checkbox ml-2" style="margin-top: -15px;"><input type="checkbox" class="custom-control-input" id="row_check_' + data + '" name="row_check[]" value="' + row['rowid'] + '" required /><label class="custom-control-label" for="row_check_' + data + '"></label></div>';
+        return '<div class="custom-control custom-checkbox ml-2"><input type="checkbox" class="custom-control-input" id="row_check_' + data + '" name="row_check[]" value="' + row['rowid'] + '" required /><label class="custom-control-label" for="row_check_' + data + '"></label></div>';
     } else {
         return data;
     }
@@ -102,6 +104,8 @@ function edit() {
         $("#menu_rank_new").val(tableData["rank"]);
         $('select[name=module_name_new]').val(tableData["module"]);
         $('select[name=parent_node_new]').val(tableData["parent"]);
+        $("#err_module_name_new").removeClass("d-block");
+        $("#err_parent_node_new").removeClass("d-block");
         $('.selectpicker').selectpicker('refresh');
         $("#menu_name_new").val(tableData["name"]).parents(".form-group").addClass("focused");
         $("#menu_url_new").val(tableData["url"]).parents(".form-group").addClass("focused");
@@ -222,6 +226,13 @@ function populateSelOpt(data, select) {
         option.setAttribute('value', val);
         option.appendChild(document.createTextNode(key));
         select.appendChild(option); 
+    });
+}
+
+// Alert Onchange Select Value
+function selectOnChange(ids, select) {
+    $("#" + ids).on('change', function(event) {
+        $("#err_" + ids).removeClass("d-block");
     });
 }
 </script>

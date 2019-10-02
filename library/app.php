@@ -1,7 +1,7 @@
 <?php
 Namespace App;
 
-if (! defined('APP_DIR'))  die("APP_DIR not defined!");
+if (! defined('APP_DIR')) die("APP_DIR not defined!");
 if (! defined('LIB_DIR')) die("LIB_DIR not defined!");
 
 require_once(dirname(LIB_DIR) . DIRECTORY_SEPARATOR . "vendor/autoload.php");

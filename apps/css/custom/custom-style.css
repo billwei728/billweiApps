@@ -18,6 +18,16 @@
 @import "https://fonts.googleapis.com/css?family=Alegreya+Sans+SC&display=swap";
 
 
+/*#region Background */
+.view {
+    background-image: url('../../img/background/bg_image2.jpg'); 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    background-position: center center;
+}
+/*#endregion */
+
+
 /*#region Pre-Loading */
 .loader {
     position: fixed;
@@ -28,16 +38,6 @@
     z-index: 9999;
     background: url('../../img/loader/loader_2.gif') 50% 50% no-repeat rgb(249,249,249);
     opacity: .8;
-}
-/*#endregion */
-
-
-/*#region Background */
-.view {
-    background-image: url('../../img/background/bg_image2.jpg'); 
-    background-repeat: no-repeat; 
-    background-size: cover; 
-    background-position: center center;
 }
 /*#endregion */
 
@@ -307,6 +307,89 @@ a.logoText:focus:before {
       opacity: .02;
      }
 }*/
+/*#endregion */
+
+
+/*#region Home Page */
+#homepage {
+  position: relative;
+  height: 100vh;
+}
+
+#homepage .homepage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.homepage {
+  max-width: 520px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.homepage .homepage-title {
+  position: relative;
+  height: 200px;
+  margin: 0px auto 20px;
+  z-index: -1;
+}
+
+.homepage .homepage-title h1 {
+  font-family: 'Josefin Sans';
+  font-size: 177px;
+  font-weight: 200;
+  margin: 0px;
+  color: #828A99;
+  text-transform: uppercase;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  opacity: 0.9;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.homepage .homepage-title h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 21px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #211b19;
+  background: #fff;
+  padding: 10px 5px;
+  margin: auto;
+  display: inline-block;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  opacity: 0.9;
+}
+
+@media only screen and (max-width: 767px) {
+  .homepage .homepage-title h1 {
+    font-size: 148px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .homepage .homepage-title {
+    height: 148px;
+    margin: 0px auto 10px;
+  }
+  .homepage .homepage-title h1 {
+    font-size: 65px;
+  }
+  .homepage .homepage-title h2 {
+    font-size: 12px;
+  }
+}
 /*#endregion */
 
 

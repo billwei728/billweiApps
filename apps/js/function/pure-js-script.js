@@ -24,6 +24,8 @@ $(function() {
     redirection("#home404", homeURL, null, null);
     redirection("#module_list", pathURL, sessionURL, "module_list");
 	redirection("#menu_list", pathURL, sessionURL, "menu_list");
+    redirection("#clearlog", pathURL, sessionURL, "clearlog");
+    redirection("#account_list", pathURL, sessionURL, "account_list");
 
     $("#system_doctor_st, #system_doctor_pr").on("click", function(event) {
         $("#webContent").addClass("d-none");

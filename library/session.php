@@ -4,7 +4,7 @@ session_start();
 $time = $_SERVER['REQUEST_TIME'];
 
 /** for a 30 minute timeout, specified in seconds */
-$timeout_duration = 1800;
+$timeout_duration = 18000;
 
 /**
  * Here we look for the user's LAST_ACTIVITY timestamp. If

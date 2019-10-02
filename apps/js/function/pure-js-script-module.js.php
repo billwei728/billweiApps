@@ -46,6 +46,7 @@ $(function() {
         dataCount.push($(this).val());
     });
     $("#btnUp_" + dataCount[0]).remove();
+    $("#btnDown_" + dataCount[0] + " i").removeClass("ml-1");
     $("#btnDown_" + dataCount[dataCount.length - 1]).remove();
 
     // Enter Key to Fire Button Event
@@ -59,7 +60,7 @@ $(function() {
 
 function dataChkBox(data, type, row) {
     if (type == "display") {
-        return '<div class="custom-control custom-checkbox ml-2" style="margin-top: -15px;"><input type="checkbox" class="custom-control-input" id="row_check_' + row['id'] + '" name="row_check[]" value="' + data + '" required /><label class="custom-control-label" for="row_check_' + row['id'] + '"></label></div>';
+        return '<div class="custom-control custom-checkbox ml-2"><input type="checkbox" class="custom-control-input" id="row_check_' + row['id'] + '" name="row_check[]" value="' + data + '" required /><label class="custom-control-label" for="row_check_' + row['id'] + '"></label></div>';
     } else {
         return data;
     }
@@ -67,7 +68,7 @@ function dataChkBox(data, type, row) {
 
 function dataId(data, type, row) {
     if (type == "display") {
-        return '<input type="text" class="form-control form-control-sm text-center border-0 shadow-none" id="module_id_' + row['id'] + '" name="module_id[]" value="' + data + '" aria-describedby="inputGroupPrepend" style="background-color: rgba(0, 0, 0, 0); outline: none;" size="2"; />';
+        return '<input type="text" class="form-control form-control-sm text-center border-0 shadow-none" id="module_id_' + row['id'] + '" name="module_id[]" value="' + data + '" aria-describedby="inputGroupPrepend" style="background-color: rgba(0, 0, 0, 0); outline: none;" size="2"; readonly />';
     } else {
         return data;
     }
