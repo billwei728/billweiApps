@@ -9,6 +9,13 @@
         table.fixedHeader-floating {
             display: none;
         }
+        .w-0 {
+            position: absolute;
+            color: white;
+            width: 2%;
+            border: none;
+            z-index: -10;
+        }
     </style>
     <script type="text/javascript">
         preLoading();

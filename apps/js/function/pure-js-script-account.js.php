@@ -95,7 +95,7 @@ function dataNo(data, type, row) {
 
 function dataName(data, type, row) {
     if (type == "display") {
-        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="20" id="account_name_' + row['id'] + '" name="account_name[]" title="account_name_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid name.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2 click-me" id="account_name_copy_' + row['id'] + '" data-clipboard-target="#account_name_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
+        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="50" id="account_name_' + row['id'] + '" name="account_name[]" title="account_name_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid name.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2 click-me" id="account_name_copy_' + row['id'] + '" data-clipboard-target="#account_name_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
     } else {
         return data;
     }
@@ -103,7 +103,7 @@ function dataName(data, type, row) {
 
 function dataId(data, type, row) {
     if (type == "display") {
-        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="20" id="account_id_' + row['id'] + '" name="account_id[]" title="account_id_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid id.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2" id="account_id_copy_' + row['id'] + '" data-clipboard-target="#account_id_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
+        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="50" id="account_id_' + row['id'] + '" name="account_id[]" title="account_id_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid id.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2" id="account_id_copy_' + row['id'] + '" data-clipboard-target="#account_id_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
     } else {
         return data;
     }
@@ -111,7 +111,7 @@ function dataId(data, type, row) {
 
 function dataPass(data, type, row) {
     if (type == "display") {
-        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="20" id="account_pass_' + row['id'] + '" name="account_pass[]" title="account_pass_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid name.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2" id="account_pass_copy_' + row['id'] + '" data-clipboard-target="#account_pass_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
+        return '<div class="input-group"><input type="password" class="form-control form-control-sm py-3" maxlength="50" id="account_pass_show_' + row['id'] + '" name="account_pass[]" title="account_pass_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /><input type="text" class="w-0" id="account_pass_' + row['id'] + '" value="' + data + '" /> <div class="invalid-feedback">Please provide a valid name.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2" id="account_pass_copy_' + row['id'] + '" data-clipboard-target="#account_pass_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
     } else {
         return data;
     }
@@ -119,7 +119,7 @@ function dataPass(data, type, row) {
 
 function dataRemark(data, type, row) {
     if (type == "display") {
-        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="20" id="account_remark_' + row['id'] + '" name="account_remark[]" title="account_remark_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid name.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2" id="account_remark_copy_' + row['id'] + '" data-clipboard-target="#account_remark_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
+        return '<div class="input-group"><input type="text" class="form-control form-control-sm py-3" maxlength="50" id="account_remark_' + row['id'] + '" name="account_remark[]" title="account_remark_' + row['id'] + '" value="' + data + '" aria-describedby="inputGroupPrepend" required /> <div class="invalid-feedback">Please provide a valid name.</div><div class="input-group-append"><button type="button" class="btn btn-outline-secondary p-1 px-2" id="account_remark_copy_' + row['id'] + '" data-clipboard-target="#account_remark_' + row['id'] + '"><i class="far fa-copy"></i></button></div></div>';
     } else {
         return data;
     }

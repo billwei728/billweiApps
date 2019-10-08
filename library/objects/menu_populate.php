@@ -69,7 +69,7 @@ class menu_populate extends menu_store
             foreach ($arrList as $arrkey => $arrvalue) {
                 if ($arrvalue["module"] == $value[$moduleColumn[0]]) {
                     $list[] = $arrvalue;
-                    if ($arrvalue["parent"] != "-") {
+                    if ("-" != $arrvalue["parent"]) {
                         $childlist[] = $arrvalue;
                     }
                 }
@@ -90,34 +90,49 @@ class menu_populate extends menu_store
 
     protected function buildFirstLvlMenu($arrList = array()) 
     {
-        $listPrev = array();
-        $list = array();
+        $listParent = array();
+        $listChildLvl = array();
         foreach ($arrList as $arrkey => $arrvalue) {
             if ("-" == $arrvalue["parent"]) {
-                $listPrev[] = $arrvalue;
+                $listParent[] = $arrvalue;
             } else {
-                $list[] = $arrvalue;
+                $listChildLvl[$arrvalue["parent"]][] = $arrvalue;
             }
         }
 
         $firstLvlMenu = "";
-        foreach ($listPrev as $key => $value) {
-            if ("-" == $value["url"]) {
+        foreach ($listParent as $parentkey => $parentvalue) {
+            if ("-" == $parentvalue["url"]) {
                 $firstLvlMenu .= '<li>';
-                $firstLvlMenu .= '<a href="" class="list-link" id="' . $value["idname"] . '">';
-                $firstLvlMenu .= '<i class="' . $value["icon"] . '" aria-hidden="true"></i> ' . $value["name"];
+                $firstLvlMenu .= '<a href="" class="list-link" id="' . $parentvalue["idname"] . '">';
+                $firstLvlMenu .= '<i class="' . $parentvalue["icon"] . '" aria-hidden="true"></i> ' . $parentvalue["name"];
                 $firstLvlMenu .= '</a>';
                 $firstLvlMenu .= '</li>';
 
-            } else if ("--" == $value["url"]) {
-                // $firstLvlMenu .= $this->buildSecondLvlMenu($list);
-                if (isset($list) && ! empty($list)) {
+            } else if ("--" == $parentvalue["url"]) {
+                if (isset($listChildLvl) && ! empty($listChildLvl)) {
+                    $listChild = array();
+                    $listChildMenu = array();
+                    foreach ($listChildLvl as $childkey => $childvalue) {
+                        if ($parentvalue["id"] == $childkey) {
+                            foreach ($childvalue as $subkey => $subvalue) {
+                                $listChild[] = $subvalue['id'];
+                            }
+                            $listChildMenu[$childkey] = $childvalue;
+                        } 
+                    }
+                    foreach ($listChildLvl as $childkey => $childvalue) {
+                        if (in_array($childkey, $listChild)) {
+                            $listChildMenu[$childkey] = $childvalue;
+                        }
+                    }
+
                     $firstLvlMenu .= '<li>';
-                    $firstLvlMenu .= '<a href="#" class="list-link link-arrow" id="' . $value["idname"] . '">';
-                    $firstLvlMenu .= '<i class="' . $value["icon"] . '" aria-hidden="true"></i> ' . $value["name"];
+                    $firstLvlMenu .= '<a href="/" onclick="return false;" class="list-link link-arrow" id="' . $parentvalue["idname"] . '">';
+                    $firstLvlMenu .= '<i class="' . $parentvalue["icon"] . '" aria-hidden="true"></i> ' . $parentvalue["name"];
                     $firstLvlMenu .= '</a>';
-                    $firstLvlMenu .= '<ul class="list-unstyled list-hidden" id="' . $value["idname"] . '_child">';
-                    $firstLvlMenu .= $this->buildChildMenu($list);
+                    $firstLvlMenu .= '<ul class="list-unstyled list-hidden" id="' . $parentvalue["idname"] . '_child">';
+                    $firstLvlMenu .= $this->buildChildMenu($listChildMenu);
                     $firstLvlMenu .= '</ul>';
                     $firstLvlMenu .= '</li>';
                 }
@@ -131,10 +146,10 @@ class menu_populate extends menu_store
     {
         $secondLvlMenu = "";
         foreach ($arrList as $key => $value) {
-            $listPrev = array();
-            foreach ($arrList as $arrkey => $arrvalue) {
-                if ($value["id"] == $arrvalue["parent"]) {
-                    $listPrev[] = $arrvalue;
+            $listChild = array();
+            foreach ($arrList as $subkey => $subvalue) {
+                if ($value["id"] == $subvalue["parent"]) {
+                    $listChild[] = $subvalue;
                 }
             }
 
@@ -144,7 +159,7 @@ class menu_populate extends menu_store
                 $secondLvlMenu .= '<i class="' . $value["icon"] . '" aria-hidden="true"></i> ' . $value["name"];
                 $secondLvlMenu .= '</a>';
                 $secondLvlMenu .= '<ul class="list-unstyled list-hidden" id="' . $value["idname"] . '">';
-                $secondLvlMenu .= $this->buildChildMenu($listPrev);
+                $secondLvlMenu .= $this->buildChildMenu($listChild, true);
                 $secondLvlMenu .= '</ul>';
                 $secondLvlMenu .= '</li>';
             }
@@ -153,22 +168,34 @@ class menu_populate extends menu_store
         return $secondLvlMenu;
     }
 
-    protected function buildChildMenu($arrList = array()) 
+    protected function buildChildMenu($arrList = array(), $isChild = false) 
     {
+        $listFirstLvl = array();
+        foreach ($arrList as $key => $value) {
+            $listFirstLvl[] = $value;
+        }
+
+        if ($isChild) {
+            $listFirstLvlMenu = $listFirstLvl;
+        } else {
+            $listFirstLvlMenu = $listFirstLvl[0];
+        }
+
         $childLvlMenu = "";
         $populatedArrId = array();
-        foreach ($arrList as $key => $value) {
+        foreach ($listFirstLvlMenu as $key => $value) {
             if ("--" == $value["url"]) {
-                $listPrev = array();
-                $listPrev[] = $value;
-                foreach ($arrList as $arrkey => $arrvalue) {
+                $listNext = array();
+                $listNext[] = $value;
+                foreach ($arrList[$value["id"]] as $arrkey => $arrvalue) {
                     if ($value["id"] == $arrvalue["parent"]) {
-                        $listPrev[] = $arrvalue;
+                        $listNext[] = $arrvalue;
                         $populatedArrId[] = $arrvalue["id"];
                     }
                 }
+
                 $populatedArrId[] = $value["id"];
-                $childLvlMenu .= $this->buildSecondLvlMenu($listPrev);
+                $childLvlMenu .= $this->buildSecondLvlMenu($listNext);
             } else {
                 if (! in_array($value["id"], $populatedArrId)) {
                     $childLvlMenu .= '<li id="li_' . $value["idname"] . '">';
@@ -180,6 +207,7 @@ class menu_populate extends menu_store
                     $childLvlMenu .= '<i class="' . $value["icon"] . '" aria-hidden="true"></i> ' . $value["name"];
                     $childLvlMenu .= '</a>';
                     $childLvlMenu .= '</li>';
+                    $populatedArrId[] = $value["id"];
                 }
             }  
         }

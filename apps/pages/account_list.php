@@ -48,21 +48,21 @@
                                 <div class="form-group">
                                     <div class="mb-5">
                                         <label for="account_type_new" class="form-label">Account Type</label>
-                                        <input type="text" class="form-input form-control" id="account_type_new" name="account_type_new" maxlength="30" aria-describedby="account_name" required />
+                                        <input type="text" class="form-input form-control" id="account_type_new" name="account_type_new" maxlength="50" aria-describedby="account_name" required />
                                         <div class="invalid-feedback">Please provide a valid type.</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="mb-5">
                                         <label for="account_id_new" class="form-label">Account ID</label>
-                                        <input type="text" class="form-input form-control" id="account_id_new" name="account_id_new" maxlength="30" aria-describedby="account_name" required />
+                                        <input type="text" class="form-input form-control" id="account_id_new" name="account_id_new" maxlength="50" aria-describedby="account_name" required />
                                         <div class="invalid-feedback">Please provide a valid type.</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="mb-5">
                                         <label for="account_pass_new" class="form-label">Account Password</label>
-                                        <input type="text" class="form-input form-control" id="account_pass_new" name="account_pass_new" maxlength="30" aria-describedby="account_name" required />
+                                        <input type="text" class="form-input form-control" id="account_pass_new" name="account_pass_new" maxlength="50" aria-describedby="account_name" required />
                                         <div class="invalid-feedback">Please provide a valid type.</div>
                                     </div>
                                 </div>
