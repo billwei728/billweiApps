@@ -16,6 +16,9 @@
             border: none;
             z-index: -10;
         }
+        .modal-header {
+            cursor: move;
+        }
     </style>
     <script type="text/javascript">
         preLoading();
@@ -37,7 +40,7 @@
             <!-- navbar top fixed -->
             <nav class="navbar navbar-expand-lg fixed-top navbar-lighten">
                 <!-- navbar title -->
-                <a class="navbar-brand navbar-link context-menu logoText"><em>Tech Menu</em></a>
+                <a class="navbar-brand navbar-link context-menu logoText bg-white"><em>Tech Menu</em></a>
                 <!-- navbar sidebar menu toggle -->
                 <span class="navbar-text">
                     <a href="#" id="sidebar-toggle" class="navbar-bars">

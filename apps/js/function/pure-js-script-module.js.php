@@ -26,15 +26,6 @@ $(function() {
             'blurable': true,
             'selector': "td:first-child"
         },
-        // 'language': {
-        //     'select': {
-        //         'rows': {
-        //             _: "You have selected %d rows",
-        //             0: "Click a row to select it",
-        //             1: "Only 1 row selected"
-        //         }
-        //     }
-        // },
         'order': [[ 1, "asc" ]],
         'select': false
     });

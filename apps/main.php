@@ -5,9 +5,9 @@ define('LIB_DIR', dirname(APP_DIR) . DIRECTORY_SEPARATOR . "library" . DIRECTORY
 
 if (defined('MENU_MODE_ADMIN')) {
 	define('OPERATION_MODE', MENU_MODE_ADMIN);
-} elseif (defined('MENU_MODE_XPAYTT')) {
+} else if (defined('MENU_MODE_XPAYTT')) {
 	define('OPERATION_MODE', MENU_MODE_XPAYTT);
-} elseif (defined('MENU_MODE_EEZIEPAY')) {
+} else if (defined('MENU_MODE_EEZIEPAY')) {
 	define('OPERATION_MODE', MENU_MODE_EEZIEPAY);
 }
 

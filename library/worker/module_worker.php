@@ -185,9 +185,6 @@ class module_worker extends module_store
 
     private function getNewIndex()  
     {
-        // $file = escapeshellarg($this->getFileName()); // for the security concious (should be everyone!)
-        // $line = `tail -n 1 $file`;
-        // $array = explode("||",$line);
         $listPrev = $this->readFile();
         $listCount = count($listPrev);
         

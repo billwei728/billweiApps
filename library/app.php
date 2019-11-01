@@ -8,7 +8,6 @@ require_once(dirname(LIB_DIR) . DIRECTORY_SEPARATOR . "vendor/autoload.php");
 include_once("class_loader.php");
 include_once("global.php");
 include_once("setting.php");
-// include_once("base.php");
 
 Use App\base;
 
@@ -43,7 +42,6 @@ class app extends base
 		$filename = '';
 		$libPath = $this->getLibPath();
 // echo "Reached autoload function, Class name: " . $className . "<br />";
-
 		if (preg_match('/PHPExcel([a-zA-Z_]+)/', $className, $regs)) {
 			$filename = 'adaptor/PHPExcel/' . str_replace('_', '/', $className) . '.php';
 		} else {
@@ -51,9 +49,9 @@ class app extends base
 			if ($className == 'adorecordset_ext_empty') return;
 			if (strpos($className, 'config') !== false) {
 				$filename = 'config/' . $className . '.php';
-			} elseif (strpos($className, 'store') !== false) {
+			} else if (strpos($className, 'store') !== false) {
 				$filename = 'datastore/' . $className . '.php';
-			} elseif (preg_match('/mx([a-z0-9]+)/', $className, $regs)) {
+			} else if (preg_match('/mx([a-z0-9]+)/', $className, $regs)) {
 				$filename = 'objects/' . $regs[1] . '.inc.php';
 
 				if (! file_exists($libPath . $filename)) {
@@ -64,7 +62,7 @@ class app extends base
 						$filename = $regs[1] . '.php';
 					}
 				}
-			} elseif (strpos($className, 'worker') !== false) {
+			} else if (strpos($className, 'worker') !== false) {
 				$filename = 'worker/' . $className . '.php';
 			} else {
 				// $libPath = dirname(__DIR__ ) . DIRECTORY_SEPARATOR;
@@ -99,7 +97,9 @@ class app extends base
 	protected function setLibPath($path) 
 	{
 		$this->libPath = $path;
-		if (! preg_match('/\/$/', $this->libPath)) $this->libPath .= '/';
+		if (! preg_match('/\/$/', $this->libPath)) {
+			$this->libPath .= '/';
+		}
 	}
 
     /** Get the path that points to the MX library */
@@ -127,7 +127,7 @@ class app extends base
 
 	public function __destruct() 
 	{
-		//session_write_close();
+		session_write_close();
 	}
 }
 ?>

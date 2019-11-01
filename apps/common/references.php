@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Gateway Integration</title>
+	<title>Menu</title>
     <link rel="shortcut icon" href="img/icons/menu_logo.png" />
 	<link rel="icon" href="img/icons/menu_logo.png" />
 	

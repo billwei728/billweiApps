@@ -13,6 +13,4 @@ Use Exception;
         $arrParams['account_action'] = "select";
         $result['account'] = $account_worker->doAction($arrParams);
     }
-
-    // echo '<pre>'; print_r($_POST); echo '</pre>';
 ?>

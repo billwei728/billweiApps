@@ -18,9 +18,10 @@ $(function() {
             { 'title': "Rank", 'data': "rank", 'render': dataRank }
         ],
         'columnDefs': [
-            { 'targets': [0, 1, 2, 3], "className": "text-center", 'width': "5%" },
+            { 'targets': [0], 'orderable': false, 'searchable': false, 'width': "3%" },
+            { 'targets': [1, 2, 3], "className": "text-center", 'width': "5%" },
             { 'targets': [4], 'width': "20%" },
-            { 'targets': [5], 'width': "35%" },
+            { 'targets': [5], 'width': "28%" },
             { 'targets': [6], 'width': "10%" },
             { 'targets': [7], 'width': "15%" },
             { 'targets': [8], "className": "text-center",'width': "10%" }
@@ -61,6 +62,24 @@ $(function() {
 
     // Refresh Select Picker
     $("#module_name_new").selectpicker('refresh').trigger('change');
+
+    $(".modal-header").on("mousedown", function(mousedownEvt) {
+        var $draggable = $(this);
+        var x = mousedownEvt.pageX - $draggable.offset().left,
+            y = mousedownEvt.pageY - $draggable.offset().top;
+        $("body").on("mousemove.draggable", function(mousemoveEvt) {
+            $draggable.closest(".modal-dialog").offset({
+                "left": mousemoveEvt.pageX - x,
+                "top": mousemoveEvt.pageY - y
+            });
+        });
+        $("body").one("mouseup", function() {
+            $("body").off("mousemove.draggable");
+        });
+        $draggable.closest(".modal").one("bs.modal.hide", function() {
+            $("body").off("mousemove.draggable");
+        });
+    });
 });
 
 // Datatable Checkbox Render

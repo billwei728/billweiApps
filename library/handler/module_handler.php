@@ -13,6 +13,4 @@ Use Exception;
         $arrParams['module_action'] = "select";
         $result['module'] = $module_worker->doAction($arrParams);
     }
-
-    // echo '<pre>'; print_r($params); echo '</pre>';
 ?>

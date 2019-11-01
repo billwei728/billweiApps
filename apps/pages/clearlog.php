@@ -12,7 +12,7 @@
         	$(function() { 
 	        	// Notification
 			    var result = "success",
-			        resMsg = "Log(s) has been deleted successfully";
+			        resMsg = '<i class="fas fa-info-circle fa-lg mr-2"></i>' + "Log(s) has been deleted successfully";
 		        $.miniNoty(resMsg, result);
 		        return false;
 			});

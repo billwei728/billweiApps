@@ -127,14 +127,16 @@ class menu_populate extends menu_store
                         }
                     }
 
-                    $firstLvlMenu .= '<li>';
-                    $firstLvlMenu .= '<a href="/" onclick="return false;" class="list-link link-arrow" id="' . $parentvalue["idname"] . '">';
-                    $firstLvlMenu .= '<i class="' . $parentvalue["icon"] . '" aria-hidden="true"></i> ' . $parentvalue["name"];
-                    $firstLvlMenu .= '</a>';
-                    $firstLvlMenu .= '<ul class="list-unstyled list-hidden" id="' . $parentvalue["idname"] . '_child">';
-                    $firstLvlMenu .= $this->buildChildMenu($listChildMenu);
-                    $firstLvlMenu .= '</ul>';
-                    $firstLvlMenu .= '</li>';
+                    if (isset($listChildMenu) && ! empty($listChildMenu)) {
+                        $firstLvlMenu .= '<li>';
+                        $firstLvlMenu .= '<a href="/" onclick="return false;" class="list-link link-arrow" id="' . $parentvalue["idname"] . '">';
+                        $firstLvlMenu .= '<i class="' . $parentvalue["icon"] . '" aria-hidden="true"></i> ' . $parentvalue["name"];
+                        $firstLvlMenu .= '</a>';
+                        $firstLvlMenu .= '<ul class="list-unstyled list-hidden" id="' . $parentvalue["idname"] . '_child">';
+                        $firstLvlMenu .= $this->buildChildMenu($listChildMenu);
+                        $firstLvlMenu .= '</ul>';
+                        $firstLvlMenu .= '</li>';
+                    }
                 }
             }
         }

@@ -27,9 +27,15 @@ $(function() {
     redirection("#clearlog", pathURL, sessionURL, "clearlog");
     redirection("#account_list", pathURL, sessionURL, "account_list");
 
-    $("#system_doctor_st, #system_doctor_pr").on("click", function(event) {
-        $("#webContent").addClass("d-none");
-        $("#iframeContent").removeClass("d-none");
+    $("a").on("click", function(event) {
+        var urlLength = $(this).attr("href").length;
+        if (1 < urlLength) {
+            $("#webContent").addClass("d-none");
+            $("#iframeContent").removeClass("d-none");
+        } else {
+            $("#webContent").removeClass("d-none");
+            $("#iframeContent").addClass("d-none");
+        }
     });
 
     // Get current page and set current in nav
@@ -69,9 +75,9 @@ $(function() {
         action = getCookieValue("action").replace("_", " "),
         resMsg;
     if ("success" == result) {
-        resMsg = total + " record(s) has been " + action + " successfully";
+        resMsg = '<i class="fas fa-info-circle fa-lg mr-2"></i>' + total + " record(s) has been " + action + " successfully";
     } else if ("error" == result) {
-        resMsg = "Failed to " + action + " " + total + " record(s)";
+        resMsg = '<i class="fas fa-info-circle fa-lg mr-2"></i>' + " Failed to " + action + " " + total + " record(s)";
     }
     if (result) {
         $.miniNoty(resMsg, result);
@@ -98,15 +104,3 @@ function getCookieValue(cname)
     var value = document.cookie.match('(^|[^;]+)\\s*' + cname + '\\s*=\\s*([^;]+)');
     return value ? value.pop() : '';
 }
-
-// function setCookieValue(cname, cvalue, exseconds) 
-// {
-//     var expires = "";
-//     if (exseconds) {
-//         var date = new Date();
-//         date.setTime(date.getTime() + (exseconds));
-//         expires = "; expires=" + date;
-//     }
-//     document.cookie = cname + "=" + (cvalue || "")  + expires + "; path=/";
-// }
-	
