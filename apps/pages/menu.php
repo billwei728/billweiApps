@@ -43,7 +43,7 @@
                 <a class="navbar-brand navbar-link context-menu logoText bg-white"><em>Tech Menu</em></a>
                 <!-- navbar sidebar menu toggle -->
                 <span class="navbar-text">
-                    <a href="#" id="sidebar-toggle" class="navbar-bars">
+                    <a href="#" id="sidebar-toggle" class="navbar-bars" onclick="return false;">
                         <i class="fa fa-bars" aria-hidden="true"></i>
                     </a>
                 </span>

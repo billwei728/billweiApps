@@ -17,6 +17,7 @@
   .content {
     min-width: 0;
     width: 100%;
+    margin-left: 270px;
   }
 }
 
@@ -28,6 +29,8 @@
 }
 
 .sidebar {
+  position: fixed; 
+  z-index: 1;
   min-height: calc(100vh - 3.5625rem);
   margin-left: -17rem;
   transition: margin 0.55s ease-out;
@@ -212,15 +215,19 @@
 }
 
 .body-lighten {
-  background-color: #f4f4f4;
+  /*background-color: #f9f9f9;*/
   color: #404040;
 }
 
 .sidebar-lighten {
-  background-image: url('../../img/background/bg_image2.jpg'); 
+  background-color: #f9f9f9;
+  background-image: url('../../img/background/bg_image2.jpg');
   background-repeat: no-repeat; 
-  background-size: cover; 
-  background-position: center center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  /*background-position: center center;*/
 }
 
 .sidebar-lighten .ps__rail-y.ps--clicking .ps__thumb-y,

@@ -1,8 +1,6 @@
 <?php 
 Namespace App;
 
-Use App\worker\module_worker;
-
     $page = 'home';
     if (isset($_SESSION['page'])) {
         $page = $_SESSION['page'];
@@ -12,8 +10,10 @@ Use App\worker\module_worker;
     if (isset($page)) {
         $filename = PAGES . $page . '.php';
         if (file_exists($filename)) {
-            include_once(WORKER . $module[0] . "_worker.php");
-            include_once(HANDLER . $module[0] . "_handler.php");
+            if (file_exists(HANDLER . $module[0] . "_handler.php")) {
+                include_once(WORKER . $module[0] . "_worker.php");
+                include_once(HANDLER . $module[0] . "_handler.php");
+            }
             include_once(PAGES . $page . ".php");
         } else if ($page == "home") {
         	include_once(PAGES . $page . ".html");

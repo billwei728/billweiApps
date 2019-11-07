@@ -20,21 +20,21 @@ $(function() {
         homeURL = pathURL + user + ".php";
     }
     
-	redirection("#home", homeURL, null, null);
-    redirection("#home404", homeURL, null, null);
-    redirection("#module_list", pathURL, sessionURL, "module_list");
-	redirection("#menu_list", pathURL, sessionURL, "menu_list");
-    redirection("#clearlog", pathURL, sessionURL, "clearlog");
-    redirection("#account_list", pathURL, sessionURL, "account_list");
-
-    $("a").on("click", function(event) {
-        var urlLength = $(this).attr("href").length;
+    $("a.list-link").on("click", function(event) {
+        var webId = $(this).attr("id");
+        var webHref = $(this).attr("href");
+        var urlLength = webHref.length;
         if (1 < urlLength) {
+            $("#webContent").html("");
             $("#webContent").addClass("d-none");
             $("#iframeContent").removeClass("d-none");
         } else {
             $("#webContent").removeClass("d-none");
             $("#iframeContent").addClass("d-none");
+
+            if ("#" == webHref) {
+                redirection("#"+webId, pathURL, sessionURL, webId);
+            }
         }
     });
 
@@ -87,16 +87,12 @@ $(function() {
 
 function redirection(ids, url, sessurl, page)
 {
-	$(ids).click(function() {
-		var onClickId = $(this).attr("id");
-	  	event.preventDefault();
-	  	if (page) {
-	  		var redirectURL = url + sessurl + "?url=" + url + "&page=" + page;
-        	$(location).attr("href", redirectURL);
-	  	} else {
-	  		if ("home" == onClickId) $(location).attr("href", url);
-        }
-	});
+    if ("home" == ids || "home404" == ids) {
+        $(location).attr("href", url);
+    } else {
+        var redirectURL = url + sessurl + "?url=" + url + "&page=" + page;
+        $(location).attr("href", redirectURL);
+    }
 }
 
 function getCookieValue(cname) 

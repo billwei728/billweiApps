@@ -26,7 +26,7 @@ class filedata_store extends base
                     $line = fgets($fHandler);
                     $list[] = explode("||", $line);
                 }
-                $this->log('[' . get_parent_class($this) . ' - ' . __FUNCTION__ . '] ' . $filename . " Reading File.", M_LOG_INFO);
+                // $this->log('[' . get_parent_class($this) . ' - ' . __FUNCTION__ . '] ' . $filename . " Reading File.", M_LOG_INFO);
                 fclose($fHandler);
             } else {
                 throw new Exception($filename . " Open Failed.");

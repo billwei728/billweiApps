@@ -23,7 +23,10 @@
     background-image: url('../../img/background/bg_image2.jpg'); 
     background-repeat: no-repeat; 
     background-size: cover; 
-    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    /*background-position: center center;*/
 }
 /*#endregion */
 
