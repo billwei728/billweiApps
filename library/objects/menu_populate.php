@@ -104,7 +104,7 @@ class menu_populate extends menu_store
         foreach ($listParent as $parentkey => $parentvalue) {
             if ("-" == $parentvalue["url"]) {
                 $firstLvlMenu .= '<li>';
-                $firstLvlMenu .= '<a href="" class="list-link" id="' . $parentvalue["idname"] . '">';
+                $firstLvlMenu .= '<a href="#" class="list-link" id="' . $parentvalue["idname"] . '">';
                 $firstLvlMenu .= '<i class="' . $parentvalue["icon"] . '" aria-hidden="true"></i> ' . $parentvalue["name"];
                 $firstLvlMenu .= '</a>';
                 $firstLvlMenu .= '</li>';

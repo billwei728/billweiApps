@@ -24,16 +24,19 @@ $(function() {
         var webId = $(this).attr("id");
         var webHref = $(this).attr("href");
         var urlLength = webHref.length;
+        $("#webContent").empty();
         if (1 < urlLength) {
-            $("#webContent").html("");
             $("#webContent").addClass("d-none");
             $("#iframeContent").removeClass("d-none");
         } else {
             $("#webContent").removeClass("d-none");
             $("#iframeContent").addClass("d-none");
 
-            if ("#" == webHref) {
-                redirection("#"+webId, pathURL, sessionURL, webId);
+            var link_arrow = $(this).hasClass("link-arrow");
+            if (! link_arrow) {
+                if ("#" == webHref || "" == webHref) {
+                    redirection("#"+webId, pathURL, sessionURL, webId);
+                }
             }
         }
     });
